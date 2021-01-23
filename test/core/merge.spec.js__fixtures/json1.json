@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "aaa",
+    "addresses": [
+      {
+        "type": "office",
+        "city": "office city"
+      },
+      {
+        "type": "home1",
+        "city": "home1 city"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "bbb",
+    "addresses": [
+      {
+        "type": "office",
+        "city": "office city"
+      },
+      {
+        "type": "home1",
+        "city": "home1 city"
+      }
+    ]
+  }
+]

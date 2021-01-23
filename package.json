@@ -25,6 +25,7 @@
     "eslint-plugin-markdown": "1.0.2",
     "eslint-plugin-mocha": "8.0.0",
     "js-gardener": "2.0.184",
+    "node-tdd": "2.19.1",
     "nyc": "15.1.0",
     "semantic-release": "17.3.7"
   },
@@ -105,5 +106,8 @@
   },
   "engines": {
     "node": ">= 10"
+  },
+  "dependencies": {
+    "object-scan": "13.8.0"
   }
 }
