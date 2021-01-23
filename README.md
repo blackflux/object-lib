@@ -15,6 +15,8 @@
 
 ## Functions
 
+For more extensive examples, please refer to the tests.
+
 ### align(obj: Object, ref: Object)
 
 Align the ordering of one object recursively to a reference object.
@@ -33,6 +35,18 @@ align(obj, ref);
 
 ### contain(tree: Object, subtree: Object)
 
+Check if `subtree` is contained in `tree` recursively.
+
+Different types are never considered _contained_.
+
+Arrays are _contained_ iff they are the same length and every
+element is _contained_ in the corresponding element.
+
+Objects are _contained_ if the keys are a subset,
+and the respective values are _contained_.
+
+All other types are contained if they match exactly (`===`).
+
 _Example:_
 <!-- eslint-disable import/no-unresolved -->
 ```js
@@ -43,4 +57,30 @@ contain({ a: [1, 2], b: 'c' }, { a: [1, 2] });
 
 contain({ a: [1, 2], b: 'c' }, { a: [1] });
 // => false
+```
+
+### Merge(logic: Object = {})(...obj: Object[])
+
+Allows merging of objects. The logic defines paths that map to a field, or a function, to merge by.
+
+If a function is passed, it is invoked with the value, and the result is used as the merge identifier.
+
+The paths are defined using [object-scan](https://github.com/blackflux/object-scan) syntax.
+
+_Example:_
+<!-- eslint-disable import/no-unresolved -->
+```js
+const { Merge } = require('object-lig');
+
+Merge()(
+  { children: [{ id: 1 }, { id: 2 }] },
+  { children: [{ id: 2 }, { id: 3 }] }
+);
+// => { children: [ { id: 1 }, { id: 2 }, { id: 2 }, { id: 3 } ] }
+
+Merge({ '**[*]': 'id' })(
+  { children: [{ id: 1 }, { id: 2 }] },
+  { children: [{ id: 2 }, { id: 3 }] }
+);
+// => { children: [ { id: 1 }, { id: 2 }, { id: 3 } ] }
 ```
