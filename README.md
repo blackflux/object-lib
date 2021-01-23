@@ -20,8 +20,10 @@
 Align the ordering of one object recursively to a reference object.
 
 _Example:_
-<!-- eslint-disable no-undef -->
+<!-- eslint-disable import/no-unresolved -->
 ```js
+const { align } = require('object-lib');
+
 const obj = { k1: 1, k2: 2 };
 const ref = { k2: null, k1: null };
 
@@ -32,7 +34,7 @@ align(obj, ref);
 ### contain(tree: Object, subtree: Object)
 
 _Example:_
-<!-- eslint-disable no-undef -->
+<!-- eslint-disable import/no-unresolved -->
 ```js
 const { contain } = require('object-lib');
 
