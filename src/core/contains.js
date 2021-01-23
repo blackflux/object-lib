@@ -1,4 +1,4 @@
-const contain = (haystack, needle) => {
+const contains = (haystack, needle) => {
   const needleType = typeof needle;
   const haystackType = typeof haystack;
   if (needleType !== haystackType) {
@@ -15,13 +15,13 @@ const contain = (haystack, needle) => {
       if (needle.length !== haystack.length) {
         return false;
       }
-      return needle.every((e, idx) => contain(haystack[idx], e));
+      return needle.every((e, idx) => contains(haystack[idx], e));
     }
     // subset match for object
-    return Object.keys(needle).every((key) => contain(haystack[key], needle[key]));
+    return Object.keys(needle).every((key) => contains(haystack[key], needle[key]));
   }
   // default comparison
   return haystack === needle;
 };
 
-module.exports = contain;
+module.exports = contains;

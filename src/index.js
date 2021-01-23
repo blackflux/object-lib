@@ -1,9 +1,9 @@
 const align = require('./core/align');
-const contain = require('./core/contain');
+const contains = require('./core/contains');
 const Merge = require('./core/merge');
 
 module.exports = {
   align,
-  contain,
+  contains,
   Merge
 };
