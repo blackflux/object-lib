@@ -1,8 +1,11 @@
 const expect = require('chai').expect;
 const index = require('../src/index');
 
-describe('Testing Package', () => {
-  it('Testing Addition', () => {
-    expect(index(7, 9)).to.equal(16);
+describe('Testing index.js', () => {
+  it('Testing exported', () => {
+    expect(Object.keys(index)).to.deep.equal([
+      'align',
+      'contain'
+    ]);
   });
 });

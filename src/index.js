@@ -1,1 +1,7 @@
-module.exports = (a, b) => a + b;
+const align = require('./core/align');
+const contain = require('./core/contain');
+
+module.exports = {
+  align,
+  contain
+};
