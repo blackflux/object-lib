@@ -20,6 +20,7 @@
 Align the ordering of one object recursively to a reference object.
 
 _Example:_
+<!-- eslint-disable no-undef -->
 ```js
 const obj = { k1: 1, k2: 2 };
 const ref = { k2: null, k1: null };
