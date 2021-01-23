@@ -1,0 +1,5 @@
+{
+  "presets": [["latest-node", {"target": "10"}]],
+  "plugins": [],
+  "sourceMaps": false
+}
