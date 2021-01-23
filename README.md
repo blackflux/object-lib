@@ -33,7 +33,7 @@ align(obj, ref);
 // obj => { k2: 1, k1: 2 }
 ```
 
-### contain(tree: Object, subtree: Object)
+### contains(tree: Object, subtree: Object)
 
 Check if `subtree` is contained in `tree` recursively.
 
@@ -50,12 +50,12 @@ All other types are contained if they match exactly (`===`).
 _Example:_
 <!-- eslint-disable import/no-unresolved -->
 ```js
-const { contain } = require('object-lib');
+const { contains } = require('object-lib');
 
-contain({ a: [1, 2], b: 'c' }, { a: [1, 2] });
+contains({ a: [1, 2], b: 'c' }, { a: [1, 2] });
 // => true
 
-contain({ a: [1, 2], b: 'c' }, { a: [1] });
+contains({ a: [1, 2], b: 'c' }, { a: [1] });
 // => false
 ```
 
