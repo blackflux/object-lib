@@ -59,7 +59,7 @@ module.exports = (logic_ = {}) => {
     }
   });
   return (...args) => {
-    const result = mkChild(args[0]);
+    const result = mkChild(last(args));
     const groups = {};
     args.forEach((arg) => scanner(arg, { stack: [result], groups, path: [] }));
     return result;
