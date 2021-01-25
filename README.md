@@ -70,7 +70,7 @@ The paths are defined using [object-scan](https://github.com/blackflux/object-sc
 _Example:_
 <!-- eslint-disable import/no-unresolved -->
 ```js
-const { Merge } = require('object-lig');
+const { Merge } = require('object-lib');
 
 Merge()(
   { children: [{ id: 1 }, { id: 2 }] },

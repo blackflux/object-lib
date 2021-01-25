@@ -13,6 +13,12 @@ describe('Testing Merge', () => {
     expect(merge(json1, json2)).to.deep.equal(fixture('result'));
   });
 
+  it('Testing string merge', () => {
+    const d1 = 'A';
+    const d2 = 'B';
+    expect(Merge()(d1, d2)).to.deep.equal('B');
+  });
+
   it('Testing array concat', () => {
     const d1 = [{ a: 1 }];
     const d2 = [{ a: 2 }];
