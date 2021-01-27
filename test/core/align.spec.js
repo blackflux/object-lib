@@ -5,11 +5,15 @@ const align = require('../../src/core/align');
 const genData = require('./gen-data');
 
 describe('Testing align', () => {
-  const convert = (input) => JSON.stringify(input, null, 2).split('\n');
+  const convert = (input) => {
+    if (input === undefined) {
+      return input;
+    }
+    return JSON.stringify(input, null, 2).split('\n');
+  };
   const runTest = (input, template, expected) => {
     align(input, template);
-    expect(convert(input))
-      .to.deep.equal(JSON.stringify(expected, null, 2).split('\n'));
+    expect(convert(input)).to.deep.equal(convert(expected));
   };
 
   it('Batch test', ({ fixture }) => {
