@@ -27,13 +27,10 @@ const scanner = objectScan(['', '**'], {
     return true;
   },
   filterFn: ({ value, context }) => {
-    if (value instanceof Object) {
-      const last = context[context.length - 1];
-      if (last instanceof Object) {
-        align(last, value);
-      }
+    const last = context.pop();
+    if (value instanceof Object && last instanceof Object) {
+      align(last, value);
     }
-    context.pop();
   }
 });
 
