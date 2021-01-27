@@ -1,14 +1,14 @@
 const expect = require('chai').expect;
 const { describe } = require('node-tdd');
 const contains = require('../../src/core/contains');
+const genData = require('./gen-data');
 
 describe('Testing contains', { timeout: 100000 }, () => {
   it('Batch test', ({ fixture }) => {
-    const gen = fixture('gen');
     const containsRec = fixture('contains-rec');
     for (let x = 0; x < 10000; x += 1) {
-      const tree = gen();
-      const subtree = gen();
+      const tree = genData();
+      const subtree = genData();
       expect(contains(tree, subtree)).to.equal(containsRec(tree, subtree));
     }
   });
