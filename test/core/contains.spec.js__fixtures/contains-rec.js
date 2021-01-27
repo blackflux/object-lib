@@ -18,7 +18,7 @@ const containsRec = (haystack, needle) => {
       return needle.every((e, idx) => containsRec(haystack[idx], e));
     }
     // subset match for object
-    return Object.keys(needle).every((key) => containsRec(haystack[key], needle[key]));
+    return Object.keys(needle).every((key) => key in haystack && containsRec(haystack[key], needle[key]));
   }
   // default comparison
   return haystack === needle;
