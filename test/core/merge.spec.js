@@ -73,12 +73,16 @@ describe('Testing Merge', () => {
   });
 
   describe('Custom Merge', () => {
-    it('Crash test', () => {
-      const merge = Merge({ '**': 'a' });
+    it('Batch test', () => {
+      const merge = Merge({ '**': 'A' });
       for (let x = 0; x < 10000; x += 1) {
         const tree = genData();
         const subtree = genData();
+        const treeX = clonedeep(tree);
+        const subtreeX = clonedeep(subtree);
         expect(() => merge(tree, subtree)).to.not.throw();
+        expect(treeX).to.deep.equal(tree);
+        expect(subtreeX).to.deep.equal(subtree);
       }
     });
 
