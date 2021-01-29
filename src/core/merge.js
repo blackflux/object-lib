@@ -1,5 +1,6 @@
 const objectScan = require('object-scan');
 
+// todo: refactor
 module.exports = (logic_ = {}) => {
   const logic = { '**': null, ...logic_ };
   const last = (arr) => arr[arr.length - 1];
@@ -9,46 +10,63 @@ module.exports = (logic_ = {}) => {
     }
     return Array.isArray(ref) ? [] : {};
   };
-  const populate = (obj, key, fn, force = false) => {
-    if (force === true || !(key in obj)) {
+  const populate = (obj, key, fn) => {
+    if (!(key in obj)) {
       // eslint-disable-next-line no-param-reassign
       obj[key] = fn();
       return true;
     }
     return false;
   };
+  const incompatible = (a, b) => (
+    Array.isArray(a) !== Array.isArray(b)
+    || !(a instanceof Object)
+    || !(b instanceof Object)
+  );
 
   const scanner = objectScan(Object.keys(logic), {
     reverse: false,
     breakFn: ({
-      isMatch, property, value, matchedBy, context
+      isMatch, parent, property, value, matchedBy, context
     }) => {
-      if (!isMatch) return;
       const { stack, groups, path } = context;
       const current = last(stack);
+      if (!isMatch) {
+        if (incompatible(current, value)) {
+          stack[0] = mkChild(value);
+        }
+        return false;
+      }
+
       const bestNeedle = last(matchedBy);
       const groupBy = typeof logic[bestNeedle] === 'function'
         ? logic[bestNeedle](value)
         : logic[bestNeedle];
 
       if (!Array.isArray(current) || groupBy === null) {
-        if (Array.isArray(current)) {
-          current.push(mkChild(value));
-          stack.push(last(current));
-        } else {
-          populate(current, property, () => mkChild(value), !(value instanceof Object));
-          stack.push(current[property]);
+        if (Array.isArray(current) && Array.isArray(parent)) {
+          current.push(value);
+          stack.push(null);
+          return true;
         }
+        if (property in current && incompatible(current[property], value)) {
+          current[property] = value;
+          stack.push(null);
+          return true;
+        }
+        populate(current, property, () => mkChild(value));
+        stack.push(current[property]);
       } else {
         const groupId = `${bestNeedle}.${groupBy}: ${path.join('.')}`;
         populate(groups, groupId, () => ({}));
-        const groupEntryId = value[groupBy];
+        const groupEntryId = value instanceof Object ? value[groupBy] : undefined;
         if (populate(groups[groupId], groupEntryId, () => mkChild(value))) {
           current.push(groups[groupId][groupEntryId]);
         }
         path.push(`${groupBy}=${groupEntryId}`);
         stack.push(groups[groupId][groupEntryId]);
       }
+      return false;
     },
     filterFn: ({ matchedBy, context }) => {
       const { stack, path } = context;
@@ -59,9 +77,9 @@ module.exports = (logic_ = {}) => {
     }
   });
   return (...args) => {
-    const result = mkChild(last(args));
+    const stack = [undefined];
     const groups = {};
-    args.forEach((arg) => scanner(arg, { stack: [result], groups, path: [] }));
-    return result;
+    args.forEach((arg) => scanner(arg, { stack, groups, path: [] }));
+    return stack[0];
   };
 };
