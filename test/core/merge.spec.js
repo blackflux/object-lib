@@ -73,6 +73,15 @@ describe('Testing Merge', () => {
   });
 
   describe('Custom Merge', () => {
+    it('Crash test', () => {
+      const merge = Merge({ '**': 'a' });
+      for (let x = 0; x < 10000; x += 1) {
+        const tree = genData();
+        const subtree = genData();
+        expect(() => merge(tree, subtree)).to.not.throw();
+      }
+    });
+
     it('Testing SO question: https://stackoverflow.com/questions/65822248', ({ fixture }) => {
       const json1 = fixture('json1');
       const json2 = fixture('json2');

@@ -46,26 +46,26 @@ module.exports = (logic_ = {}) => {
       if (!Array.isArray(current) || groupBy === null) {
         if (Array.isArray(current) && Array.isArray(parent)) {
           current.push(value);
-          stack.push(null);
-          return true;
+        } else if (current instanceof Object) {
+          if (property in current && incompatible(current[property], value)) {
+            current[property] = value;
+          } else {
+            populate(current, property, () => mkChild(value));
+            stack.push(current[property]);
+            return false;
+          }
         }
-        if (property in current && incompatible(current[property], value)) {
-          current[property] = value;
-          stack.push(null);
-          return true;
-        }
-        populate(current, property, () => mkChild(value));
-        stack.push(current[property]);
-      } else {
-        const groupId = `${bestNeedle}.${groupBy}: ${path.join('.')}`;
-        populate(groups, groupId, () => ({}));
-        const groupEntryId = value instanceof Object ? value[groupBy] : undefined;
-        if (populate(groups[groupId], groupEntryId, () => mkChild(value))) {
-          current.push(groups[groupId][groupEntryId]);
-        }
-        path.push(`${groupBy}=${groupEntryId}`);
-        stack.push(groups[groupId][groupEntryId]);
+        stack.push(null);
+        return true;
       }
+      const groupId = `${bestNeedle}.${groupBy}: ${path.join('.')}`;
+      populate(groups, groupId, () => ({}));
+      const groupEntryId = value instanceof Object ? value[groupBy] : undefined;
+      if (populate(groups[groupId], groupEntryId, () => mkChild(value))) {
+        current.push(groups[groupId][groupEntryId]);
+      }
+      path.push(`${groupBy}=${groupEntryId}`);
+      stack.push(groups[groupId][groupEntryId]);
       return false;
     },
     filterFn: ({ matchedBy, context }) => {
