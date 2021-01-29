@@ -1,3 +1,4 @@
+const assert = require('assert');
 const objectScan = require('object-scan');
 
 const last = (arr) => arr[arr.length - 1];
@@ -83,6 +84,7 @@ module.exports = (logic_ = {}) => {
     const stack = [undefined];
     const groups = {};
     args.forEach((arg) => scanner(arg, { stack, groups, path: [] }));
+    assert(stack.length === 1);
     return stack[0];
   };
 };
