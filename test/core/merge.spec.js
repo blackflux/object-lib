@@ -116,5 +116,12 @@ describe('Testing Merge', () => {
       const d3 = ['A'];
       expect(Merge({ '[*]': 'a' })(d1, d2, d3)).to.deep.equal([{ a: 1 }, undefined]);
     });
+
+    it('Testing overwrite', () => {
+      const d1 = { a: [{ a: 1 }] };
+      const d2 = { a: [{ a: 2 }] };
+      const d3 = { a: null };
+      expect(Merge({ '[*]': 'a' })(d1, d2, d3)).to.deep.equal({ a: null });
+    });
   });
 });
