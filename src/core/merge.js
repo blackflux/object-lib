@@ -19,9 +19,9 @@ module.exports = (logic_ = {}) => {
     return false;
   };
   const incompatible = (a, b) => (
-    Array.isArray(a) !== Array.isArray(b)
-    || !(a instanceof Object)
+    !(a instanceof Object)
     || !(b instanceof Object)
+    || Array.isArray(a) !== Array.isArray(b)
   );
 
   const scanner = objectScan(Object.keys(logic), {
@@ -31,6 +31,7 @@ module.exports = (logic_ = {}) => {
     }) => {
       const { stack, groups, path } = context;
       const current = last(stack);
+
       if (!isMatch) {
         if (incompatible(current, value)) {
           stack[0] = mkChild(value);
@@ -44,20 +45,25 @@ module.exports = (logic_ = {}) => {
         : logic[bestNeedle];
 
       if (!Array.isArray(current) || groupBy === null) {
+        if (!(current instanceof Object)) {
+          stack.push(null);
+          return true;
+        }
         if (Array.isArray(current) && Array.isArray(parent)) {
           current.push(value);
-        } else if (current instanceof Object) {
-          if (property in current && incompatible(current[property], value)) {
-            current[property] = value;
-          } else {
-            populate(current, property, () => mkChild(value));
-            stack.push(current[property]);
-            return false;
-          }
+          stack.push(null);
+          return true;
         }
-        stack.push(null);
-        return true;
+        if (property in current && incompatible(current[property], value)) {
+          current[property] = value;
+          stack.push(null);
+          return true;
+        }
+        populate(current, property, () => mkChild(value));
+        stack.push(current[property]);
+        return false;
       }
+
       const groupId = `${bestNeedle}.${groupBy}: ${path.join('.')}`;
       populate(groups, groupId, () => ({}));
       const groupEntryId = value instanceof Object ? value[groupBy] : undefined;
