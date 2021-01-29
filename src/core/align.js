@@ -1,4 +1,5 @@
 const objectScan = require('object-scan');
+const last = require('../util/last');
 
 const align = (target, ref) => {
   const keysTarget = Object.keys(target);
@@ -18,18 +19,18 @@ const align = (target, ref) => {
 
 const scanner = objectScan(['', '**'], {
   breakFn: ({ property, context }) => {
-    const last = context[context.length - 1];
-    if (last instanceof Object) {
-      context.push(property === undefined ? last : last[property]);
+    const ref = last(context);
+    if (ref instanceof Object) {
+      context.push(property === undefined ? ref : ref[property]);
       return false;
     }
     context.push(null);
     return true;
   },
   filterFn: ({ value, context }) => {
-    const last = context.pop();
-    if (last instanceof Object && value instanceof Object) {
-      align(last, value);
+    const ref = context.pop();
+    if (ref instanceof Object && value instanceof Object) {
+      align(ref, value);
     }
   }
 });

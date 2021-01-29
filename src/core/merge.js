@@ -1,7 +1,7 @@
 const assert = require('assert');
 const objectScan = require('object-scan');
+const last = require('../util/last');
 
-const last = (arr) => arr[arr.length - 1];
 const mkChild = (ref) => {
   if (!(ref instanceof Object)) {
     return ref;
