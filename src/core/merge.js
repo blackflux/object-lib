@@ -1,28 +1,28 @@
 const objectScan = require('object-scan');
 
-// todo: refactor
+const last = (arr) => arr[arr.length - 1];
+const mkChild = (ref) => {
+  if (!(ref instanceof Object)) {
+    return ref;
+  }
+  return Array.isArray(ref) ? [] : {};
+};
+const populate = (obj, key, fn) => {
+  if (!(key in obj)) {
+    // eslint-disable-next-line no-param-reassign
+    obj[key] = fn();
+    return true;
+  }
+  return false;
+};
+const incompatible = (a, b) => (
+  !(a instanceof Object)
+  || !(b instanceof Object)
+  || Array.isArray(a) !== Array.isArray(b)
+);
+
 module.exports = (logic_ = {}) => {
   const logic = { '**': null, ...logic_ };
-  const last = (arr) => arr[arr.length - 1];
-  const mkChild = (ref) => {
-    if (!(ref instanceof Object)) {
-      return ref;
-    }
-    return Array.isArray(ref) ? [] : {};
-  };
-  const populate = (obj, key, fn) => {
-    if (!(key in obj)) {
-      // eslint-disable-next-line no-param-reassign
-      obj[key] = fn();
-      return true;
-    }
-    return false;
-  };
-  const incompatible = (a, b) => (
-    !(a instanceof Object)
-    || !(b instanceof Object)
-    || Array.isArray(a) !== Array.isArray(b)
-  );
 
   const scanner = objectScan(Object.keys(logic), {
     reverse: false,
