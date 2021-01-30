@@ -10,11 +10,8 @@ module.exports = (obj, needles = []) => {
     breakFn: ({
       isMatch, property, value, context, matchedBy
     }) => {
-      if (property === undefined) {
-        return false;
-      }
       if (!isMatch) {
-        return true;
+        return property !== undefined;
       }
       const ref = last(context);
       const isBreak = matchedBy.length > breakLength;
