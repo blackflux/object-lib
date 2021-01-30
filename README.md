@@ -62,6 +62,8 @@ console.log(data.c[1] === cloned.c[1]);
 
 To create a shallow clone one could use `clone({ a: {} }, ['**']);`
 
+Exclude needles can be used to remove entire branches from the result.
+
 ### contains(tree: Object, subtree: Object)
 
 Check if `subtree` is contained in `tree` recursively.
