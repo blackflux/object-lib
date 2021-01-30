@@ -26,23 +26,23 @@ module.exports = (logic_ = {}) => {
       isMatch, property, value, matchedBy, context
     }) => {
       const { stack, groups, path } = context;
-      const current = last(stack);
+      const ref = last(stack);
 
       if (!isMatch) {
-        if (incompatible(current, value)) {
+        if (incompatible(ref, value)) {
           stack[0] = mkChild(value);
         }
         return false;
       }
-      if (!(current instanceof Object)) {
+      if (!(ref instanceof Object)) {
         stack.push(null);
         return true;
       }
-      if (!Array.isArray(current)) {
-        if (!(property in current) || incompatible(current[property], value)) {
-          current[property] = mkChild(value);
+      if (!Array.isArray(ref)) {
+        if (!(property in ref) || incompatible(ref[property], value)) {
+          ref[property] = mkChild(value);
         }
-        stack.push(current[property]);
+        stack.push(ref[property]);
         return false;
       }
 
@@ -52,7 +52,7 @@ module.exports = (logic_ = {}) => {
         : logic[bestNeedle];
 
       if (groupBy === null) {
-        current.push(value);
+        ref.push(value);
         stack.push(null);
         return true;
       }
@@ -61,7 +61,7 @@ module.exports = (logic_ = {}) => {
       populate(groups, groupId, () => ({}));
       const groupEntryId = value instanceof Object ? value[groupBy] : undefined;
       if (populate(groups[groupId], groupEntryId, () => mkChild(value))) {
-        current.push(groups[groupId][groupEntryId]);
+        ref.push(groups[groupId][groupEntryId]);
       }
       path.push(`${groupBy}=${groupEntryId}`);
       stack.push(groups[groupId][groupEntryId]);
