@@ -1,7 +1,8 @@
 const expect = require('chai').expect;
 const { describe } = require('node-tdd');
 const objectScan = require('object-scan');
-const samplesize = require('lodash.samplesize');
+const sampleSize = require('lodash.samplesize');
+const cloneDeep = require('lodash.clonedeep');
 const clone = require('../../src/core/clone');
 const genData = require('./gen-data');
 
@@ -11,7 +12,9 @@ describe('Testing clone', { timeout: 100000 }, () => {
     const asRefDiff = fixture('as-ref-diff');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
+      const dataX = cloneDeep(data);
       const cloned = clone(data);
+      expect(dataX).to.deep.equal(data);
       expect(data).to.deep.equal(cloned);
       expect(refDiff(data, cloned)).to.deep.equal(asRefDiff(data));
     }
@@ -22,7 +25,9 @@ describe('Testing clone', { timeout: 100000 }, () => {
     const asRefDiff = fixture('as-ref-diff');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
+      const dataX = cloneDeep(data);
       const cloned = clone(data, ['**']);
+      expect(dataX).to.deep.equal(data);
       expect(data).to.deep.equal(cloned);
       expect(refDiff(data, cloned)).to.deep.equal(asRefDiff(data, ['**']));
     }
@@ -33,9 +38,11 @@ describe('Testing clone', { timeout: 100000 }, () => {
     const asRefDiff = fixture('as-ref-diff');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
+      const dataX = cloneDeep(data);
       const allKeys = objectScan(['**'], { joined: true })(data);
-      const selectedKeys = samplesize(allKeys, Math.floor(Math.random() * allKeys.length) + 1);
+      const selectedKeys = sampleSize(allKeys, Math.floor(Math.random() * allKeys.length) + 1);
       const cloned = clone(data, selectedKeys);
+      expect(dataX).to.deep.equal(data);
       expect(data).to.deep.equal(cloned);
       expect(refDiff(data, cloned)).to.deep.equal(asRefDiff(data, selectedKeys));
     }
@@ -45,10 +52,12 @@ describe('Testing clone', { timeout: 100000 }, () => {
     const cloneWithout = fixture('clone-without');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
+      const dataX = cloneDeep(data);
       const allKeys = objectScan(['**'], { joined: true })(data);
-      const selectedKeys = samplesize(allKeys, Math.floor(Math.random() * allKeys.length) + 1);
+      const selectedKeys = sampleSize(allKeys, Math.floor(Math.random() * allKeys.length) + 1);
       const excludeKeys = selectedKeys.map((k) => `!${k}`);
       const cloned = clone(data, excludeKeys);
+      expect(dataX).to.deep.equal(data);
       expect(cloned).to.deep.equal(cloneWithout(data, selectedKeys));
     }
   });
@@ -107,10 +116,12 @@ describe('Testing clone', { timeout: 100000 }, () => {
   });
 
   it('Test exclude, shallow and deep clone', () => {
-    const data = { a: {}, b: {}, c: {} };
-    const cloned = clone(data, ['b', '!c']);
-    expect(cloned).to.deep.equal({ a: {}, b: {} });
+    const data = { a: {}, b: {}, c: [{}, {}] };
+    const cloned = clone(data, ['b', '!c[0]', 'c[1]']);
+    expect(cloned).to.deep.equal({ a: {}, b: {}, c: [{}] });
     expect(data.a).to.not.equal(cloned.a);
     expect(data.b).to.equal(cloned.b);
+    expect(data.c).to.not.equal(cloned.c);
+    expect(data.c[1]).to.equal(cloned.c[0]);
   });
 });
