@@ -8,13 +8,13 @@ module.exports = (obj, needles = []) => {
   return objectScan(hasDoubleStar ? needles : ['**', ...needles], {
     reverse: false,
     breakFn: ({
-      isMatch, property, value, context, matchedBy
+      isMatch, property, value, context, getMatchedBy
     }) => {
       if (!isMatch) {
         return property !== undefined;
       }
       const ref = last(context);
-      const doBreak = matchedBy.length > breakLength;
+      const doBreak = getMatchedBy().length > breakLength;
       const v = doBreak ? value : mkChild(value);
       if (Array.isArray(ref)) {
         ref.push(v);
