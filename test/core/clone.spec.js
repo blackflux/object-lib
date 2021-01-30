@@ -50,6 +50,6 @@ describe('Testing clone', { timeout: 100000 }, () => {
     const cloned = clone(data, ['**']);
     expect(data).to.deep.equal(cloned);
     expect(data).to.not.equal(cloned);
-    expect(data.a).to.deep.equal(cloned.a);
+    expect(data.a).to.equal(cloned.a);
   });
 });
