@@ -35,7 +35,13 @@ align(obj, ref);
 
 ### clone(obj: Object[], needles: Array<String> = [])
 
-Deep clone object, using needles specify where to shallow clone.
+Deep clone object.
+
+Fields targeted by passed needles are created as a reference and not cloned.
+
+Fields targeted by excluded needles are removed entirely from the result.
+
+Needles are declared using the [object-scan](https://github.com/blackflux/object-scan) syntax.
 
 _Example:_
 <!-- eslint-disable import/no-unresolved,no-console -->
@@ -52,12 +58,6 @@ console.log(cloned.a !== data.a);
 console.log(cloned.b === data.b);
 // => true
 ```
-
-Passed needles are created as a reference and not cloned.
-
-Excluded needles are removed entirely from the result.
-
-Needles are declared using the [object-scan](https://github.com/blackflux/object-scan) syntax.
 
 ### contains(tree: Object, subtree: Object)
 
