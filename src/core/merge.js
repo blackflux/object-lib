@@ -1,13 +1,8 @@
 const assert = require('assert');
 const objectScan = require('object-scan');
 const last = require('../util/last');
+const mkChild = require('../util/mk-child');
 
-const mkChild = (ref) => {
-  if (!(ref instanceof Object)) {
-    return ref;
-  }
-  return Array.isArray(ref) ? [] : {};
-};
 const populate = (obj, key, fn) => {
   if (!(key in obj)) {
     // eslint-disable-next-line no-param-reassign
