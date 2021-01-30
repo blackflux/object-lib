@@ -41,6 +41,18 @@ describe('Testing clone', { timeout: 100000 }, () => {
     }
   });
 
+  it('Batch test (random exclude)', ({ fixture }) => {
+    const exclude = fixture('exclude');
+    for (let x = 0; x < 5000; x += 1) {
+      const data = genData();
+      const allKeys = objectScan(['**'], { joined: true })(data);
+      const selectedKeys = samplesize(allKeys, Math.floor(Math.random() * allKeys.length) + 1);
+      const excludeKeys = selectedKeys.map((k) => `!${k}`);
+      const cloned = clone(data, excludeKeys);
+      expect(cloned).to.deep.equal(exclude(data, selectedKeys));
+    }
+  });
+
   it('Test simple', () => {
     const data = {
       a: 1,
@@ -68,5 +80,29 @@ describe('Testing clone', { timeout: 100000 }, () => {
     const data = { a: {} };
     const cloned = clone(data, ['!a']);
     expect(cloned).to.deep.equal({});
+  });
+
+  it('Test complex exclude one', ({ fixture }) => {
+    const exclude = fixture('exclude');
+    const data = { C: { A: undefined, C: [] }, B: [] };
+    const cloned = clone(data, ['!C', '!C.A', '!B']);
+    const excluded = exclude(data, ['C', 'C.A', 'B']);
+    expect(cloned).to.deep.equal(excluded);
+  });
+
+  it('Test complex exclude two', ({ fixture }) => {
+    const exclude = fixture('exclude');
+    const data = { B: {}, C: {} };
+    const cloned = clone(data, ['!C']);
+    const excluded = exclude(data, ['C']);
+    expect(cloned).to.deep.equal(excluded);
+  });
+
+  it('Test complex exclude three', ({ fixture }) => {
+    const exclude = fixture('exclude');
+    const data = { B: [2, []] };
+    const cloned = clone(data, ['!B[0]']);
+    const excluded = exclude(data, ['B[0]']);
+    expect(cloned).to.deep.equal(excluded);
   });
 });
