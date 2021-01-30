@@ -6,7 +6,7 @@ const clone = require('../../src/core/clone');
 const genData = require('./gen-data');
 
 describe('Testing clone', { timeout: 100000 }, () => {
-  it('Batch test (simple)', ({ fixture }) => {
+  it('Batch test (deep)', ({ fixture }) => {
     const compare = fixture('compare');
     const normalize = fixture('normalize');
     for (let x = 0; x < 5000; x += 1) {
@@ -28,7 +28,7 @@ describe('Testing clone', { timeout: 100000 }, () => {
     }
   });
 
-  it('Batch test (advanced)', ({ fixture }) => {
+  it('Batch test (random shallow)', ({ fixture }) => {
     const compare = fixture('compare');
     const normalize = fixture('normalize');
     for (let x = 0; x < 5000; x += 1) {
@@ -62,5 +62,11 @@ describe('Testing clone', { timeout: 100000 }, () => {
     expect(data).to.deep.equal(cloned);
     expect(data).to.not.equal(cloned);
     expect(data.a).to.equal(cloned.a);
+  });
+
+  it('Test exclude', () => {
+    const data = { a: {} };
+    const cloned = clone(data, ['!a']);
+    expect(cloned).to.deep.equal({});
   });
 });
