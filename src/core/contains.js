@@ -1,4 +1,5 @@
 const objectScan = require('object-scan');
+const last = require('../util/last');
 
 const scanner = objectScan(['**'], {
   rtn: 'context',
@@ -7,12 +8,12 @@ const scanner = objectScan(['**'], {
     isLeaf, isMatch, property, value, context
   }) => {
     const { stack } = context;
-    const last = stack[stack.length - 1];
-    if (isMatch && !(property in last)) {
+    const ref = last(stack);
+    if (isMatch && !(property in ref)) {
       context.result = false;
       return true;
     }
-    const current = isMatch ? last[property] : last;
+    const current = isMatch ? ref[property] : ref;
     if (isLeaf) {
       if (value !== current) {
         context.result = false;
