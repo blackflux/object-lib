@@ -8,48 +8,48 @@ const genData = require('./gen-data');
 describe('Testing clone', { timeout: 100000 }, () => {
   it('Batch test (deep)', ({ fixture }) => {
     const refDiff = fixture('ref-diff');
-    const normalize = fixture('normalize');
+    const asRefDiff = fixture('as-ref-diff');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
       const cloned = clone(data);
       expect(data).to.deep.equal(cloned);
-      expect(refDiff(data, cloned)).to.deep.equal(normalize(data));
+      expect(refDiff(data, cloned)).to.deep.equal(asRefDiff(data));
     }
   });
 
   it('Batch test (shallow)', ({ fixture }) => {
     const refDiff = fixture('ref-diff');
-    const normalize = fixture('normalize');
+    const asRefDiff = fixture('as-ref-diff');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
       const cloned = clone(data, ['**']);
       expect(data).to.deep.equal(cloned);
-      expect(refDiff(data, cloned)).to.deep.equal(normalize(data, ['**']));
+      expect(refDiff(data, cloned)).to.deep.equal(asRefDiff(data, ['**']));
     }
   });
 
   it('Batch test (random shallow)', ({ fixture }) => {
     const refDiff = fixture('ref-diff');
-    const normalize = fixture('normalize');
+    const asRefDiff = fixture('as-ref-diff');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
       const allKeys = objectScan(['**'], { joined: true })(data);
       const selectedKeys = samplesize(allKeys, Math.floor(Math.random() * allKeys.length) + 1);
       const cloned = clone(data, selectedKeys);
       expect(data).to.deep.equal(cloned);
-      expect(refDiff(data, cloned)).to.deep.equal(normalize(data, selectedKeys));
+      expect(refDiff(data, cloned)).to.deep.equal(asRefDiff(data, selectedKeys));
     }
   });
 
   it('Batch test (random exclude)', ({ fixture }) => {
-    const exclude = fixture('exclude');
+    const cloneWithout = fixture('clone-without');
     for (let x = 0; x < 5000; x += 1) {
       const data = genData();
       const allKeys = objectScan(['**'], { joined: true })(data);
       const selectedKeys = samplesize(allKeys, Math.floor(Math.random() * allKeys.length) + 1);
       const excludeKeys = selectedKeys.map((k) => `!${k}`);
       const cloned = clone(data, excludeKeys);
-      expect(cloned).to.deep.equal(exclude(data, selectedKeys));
+      expect(cloned).to.deep.equal(cloneWithout(data, selectedKeys));
     }
   });
 
@@ -83,26 +83,26 @@ describe('Testing clone', { timeout: 100000 }, () => {
   });
 
   it('Test complex exclude one', ({ fixture }) => {
-    const exclude = fixture('exclude');
+    const cloneWithout = fixture('clone-without');
     const data = { C: { A: undefined, C: [] }, B: [] };
     const cloned = clone(data, ['!C', '!C.A', '!B']);
-    const excluded = exclude(data, ['C', 'C.A', 'B']);
+    const excluded = cloneWithout(data, ['C', 'C.A', 'B']);
     expect(cloned).to.deep.equal(excluded);
   });
 
   it('Test complex exclude two', ({ fixture }) => {
-    const exclude = fixture('exclude');
+    const cloneWithout = fixture('clone-without');
     const data = { B: {}, C: {} };
     const cloned = clone(data, ['!C']);
-    const excluded = exclude(data, ['C']);
+    const excluded = cloneWithout(data, ['C']);
     expect(cloned).to.deep.equal(excluded);
   });
 
   it('Test complex exclude three', ({ fixture }) => {
-    const exclude = fixture('exclude');
+    const cloneWithout = fixture('clone-without');
     const data = { B: [2, []] };
     const cloned = clone(data, ['!B[0]']);
-    const excluded = exclude(data, ['B[0]']);
+    const excluded = cloneWithout(data, ['B[0]']);
     expect(cloned).to.deep.equal(excluded);
   });
 
