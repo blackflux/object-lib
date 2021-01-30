@@ -42,27 +42,22 @@ _Example:_
 ```js
 const { clone } = require('object-lib');
 
-const data = {
-  a: 1,
-  b: { x: 2, y: { /* complex object */ } },
-  c: [{ /* complex object */ }, { z: 3 }]
-};
-const cloned = clone(data, ['b.y', 'c[0]']);
-console.log(data === cloned);
-// => false
-console.log(data.b === cloned.b);
-// => false
-console.log(data.y === cloned.y);
+const data = { a: {}, b: {}, c: {} };
+const cloned = clone(data, ['b', '!c']);
+
+console.log(cloned);
+// => { a: {}, b: {} }
+console.log(cloned.a !== data.a);
 // => true
-console.log(data.c[0] === cloned.c[0]);
+console.log(cloned.b === data.b);
 // => true
-console.log(data.c[1] === cloned.c[1]);
-// => false
 ```
 
-To create a shallow clone one could use `clone({ a: {} }, ['**']);`
+Passed needles are created as a reference and not cloned.
 
-Exclude needles can be used to remove entire branches from the result.
+Excluded needles are removed entirely from the result.
+
+Needles are declared using the [object-scan](https://github.com/blackflux/object-scan) syntax.
 
 ### contains(tree: Object, subtree: Object)
 
