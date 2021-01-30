@@ -33,6 +33,32 @@ align(obj, ref);
 // obj => { k2: 1, k1: 2 }
 ```
 
+### clone(obj: Object[], needles: Array<String> = [])
+
+Deep clone object.
+
+Fields targeted by passed needles are created as a reference and not cloned.
+
+Fields targeted by excluded needles are removed entirely from the result.
+
+Needles are declared using the [object-scan](https://github.com/blackflux/object-scan) syntax.
+
+_Example:_
+<!-- eslint-disable import/no-unresolved,no-console -->
+```js
+const { clone } = require('object-lib');
+
+const data = { a: {}, b: {}, c: {} };
+const cloned = clone(data, ['b', '!c']);
+
+console.log(cloned);
+// => { a: {}, b: {} }
+console.log(cloned.a !== data.a);
+// => true
+console.log(cloned.b === data.b);
+// => true
+```
+
 ### contains(tree: Object, subtree: Object)
 
 Check if `subtree` is contained in `tree` recursively.

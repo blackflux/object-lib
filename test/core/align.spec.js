@@ -4,7 +4,7 @@ const { describe } = require('node-tdd');
 const align = require('../../src/core/align');
 const genData = require('./gen-data');
 
-describe('Testing align', () => {
+describe('Testing align', { timeout: 100000 }, () => {
   const convert = (input) => {
     if (input === undefined) {
       return input;
