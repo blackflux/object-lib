@@ -1,10 +1,10 @@
 const expect = require('chai').expect;
 const { describe } = require('node-tdd');
-const clonedeep = require('lodash.clonedeep');
+const cloneDeep = require('lodash.clonedeep');
 const Merge = require('../../src/core/merge');
 const genData = require('./gen-data');
 
-describe('Testing Merge', () => {
+describe('Testing Merge', { timeout: 100000 }, () => {
   describe('Default Merge', () => {
     let merge;
     before(() => {
@@ -16,8 +16,8 @@ describe('Testing Merge', () => {
       for (let x = 0; x < 10000; x += 1) {
         const tree = genData();
         const subtree = genData();
-        const treeX = clonedeep(tree);
-        const subtreeX = clonedeep(subtree);
+        const treeX = cloneDeep(tree);
+        const subtreeX = cloneDeep(subtree);
         const r1 = merge(tree, subtree);
         expect(treeX).to.deep.equal(tree);
         expect(subtreeX).to.deep.equal(subtree);
@@ -78,8 +78,8 @@ describe('Testing Merge', () => {
       for (let x = 0; x < 10000; x += 1) {
         const tree = genData();
         const subtree = genData();
-        const treeX = clonedeep(tree);
-        const subtreeX = clonedeep(subtree);
+        const treeX = cloneDeep(tree);
+        const subtreeX = cloneDeep(subtree);
         expect(() => merge(tree, subtree)).to.not.throw();
         expect(treeX).to.deep.equal(tree);
         expect(subtreeX).to.deep.equal(subtree);
