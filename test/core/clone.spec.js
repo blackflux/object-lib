@@ -105,4 +105,12 @@ describe('Testing clone', { timeout: 100000 }, () => {
     const excluded = exclude(data, ['B[0]']);
     expect(cloned).to.deep.equal(excluded);
   });
+
+  it('Test exclude, shallow and deep clone', () => {
+    const data = { a: {}, b: {}, c: {} };
+    const cloned = clone(data, ['b', '!c']);
+    expect(cloned).to.deep.equal({ a: {}, b: {} });
+    expect(data.a).to.not.equal(cloned.a);
+    expect(data.b).to.equal(cloned.b);
+  });
 });
