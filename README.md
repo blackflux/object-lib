@@ -33,6 +33,35 @@ align(obj, ref);
 // obj => { k2: 1, k1: 2 }
 ```
 
+### clone(obj: Object[], needles: Array<String> = [])
+
+Deep clone object, using needles specify where to shallow clone.
+
+_Example:_
+<!-- eslint-disable import/no-unresolved,no-console -->
+```js
+const { clone } = require('object-lib');
+
+const data = {
+  a: 1,
+  b: { x: 2, y: { /* complex object */ } },
+  c: [{ /* complex object */ }, { z: 3 }]
+};
+const cloned = clone(data, ['b.y', 'c[0]']);
+console.log(data === cloned);
+// => false
+console.log(data.b === cloned.b);
+// => false
+console.log(data.y === cloned.y);
+// => true
+console.log(data.c[0] === cloned.c[0]);
+// => true
+console.log(data.c[1] === cloned.c[1]);
+// => false
+```
+
+To create a shallow clone one could use `clone({ a: {} }, ['**']);`
+
 ### contains(tree: Object, subtree: Object)
 
 Check if `subtree` is contained in `tree` recursively.

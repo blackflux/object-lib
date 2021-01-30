@@ -4,7 +4,7 @@ const clonedeep = require('lodash.clonedeep');
 const Merge = require('../../src/core/merge');
 const genData = require('./gen-data');
 
-describe('Testing Merge', () => {
+describe('Testing Merge', { timeout: 100000 }, () => {
   describe('Default Merge', () => {
     let merge;
     before(() => {
