@@ -17,6 +17,17 @@ describe('Testing clone', { timeout: 100000 }, () => {
     }
   });
 
+  it('Batch test (shallow)', ({ fixture }) => {
+    const compare = fixture('compare');
+    const normalize = fixture('normalize');
+    for (let x = 0; x < 5000; x += 1) {
+      const data = genData();
+      const cloned = clone(data, ['**']);
+      expect(data).to.deep.equal(cloned);
+      expect(compare(data, cloned)).to.deep.equal(normalize(data, ['**']));
+    }
+  });
+
   it('Batch test (advanced)', ({ fixture }) => {
     const compare = fixture('compare');
     const normalize = fixture('normalize');

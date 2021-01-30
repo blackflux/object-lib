@@ -6,21 +6,25 @@ module.exports = (obj_, needles = []) => {
     return true;
   }
   const obj = clonedeep(obj_);
-  objectScan(needles.map((n) => `!${n}`).concat('**'), {
-    strict: false,
-    breakFn: ({
-      isMatch, parent, property, isLeaf, excludedBy
-    }) => {
-      if (!isMatch) {
+  const hasDoubleStar = needles.includes('**');
+  const excludeLength = hasDoubleStar ? 0 : 1;
+  objectScan(
+    hasDoubleStar ? needles : ['**', ...needles],
+    {
+      breakFn: ({
+        isMatch, parent, property, isLeaf, matchedBy
+      }) => {
+        if (!isMatch) {
+          return false;
+        }
+        if (matchedBy.length > excludeLength || isLeaf) {
+          // eslint-disable-next-line no-param-reassign
+          parent[property] = true;
+          return true;
+        }
         return false;
       }
-      if (excludedBy.length !== 0 || isLeaf) {
-        // eslint-disable-next-line no-param-reassign
-        parent[property] = true;
-        return true;
-      }
-      return false;
     }
-  })(obj);
+  )(obj);
   return obj;
 };
