@@ -14,8 +14,8 @@ module.exports = (obj, needles = []) => {
         return property !== undefined;
       }
       const ref = last(context);
-      const isBreak = matchedBy.length > breakLength;
-      const v = isBreak ? value : mkChild(value);
+      const doBreak = matchedBy.length > breakLength;
+      const v = doBreak ? value : mkChild(value);
       if (Array.isArray(ref)) {
         ref.push(v);
         context.push(last(ref));
@@ -23,7 +23,7 @@ module.exports = (obj, needles = []) => {
         ref[property] = v;
         context.push(ref[property]);
       }
-      return isBreak;
+      return doBreak;
     },
     filterFn: ({ context }) => {
       context.pop();
