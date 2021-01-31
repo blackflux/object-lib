@@ -110,6 +110,6 @@
     "node": ">= 10"
   },
   "dependencies": {
-    "object-scan": "13.8.0"
+    "object-scan": "13.9.0"
   }
 }
