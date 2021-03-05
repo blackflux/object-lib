@@ -22,7 +22,7 @@ For more extensive examples, please refer to the tests.
 Align the ordering of one object recursively to a reference object.
 
 _Example:_
-<!-- eslint-disable import/no-unresolved -->
+<!-- eslint-disable import/no-unresolved,import/no-extraneous-dependencies -->
 ```js
 const { align } = require('object-lib');
 
@@ -44,7 +44,7 @@ Fields targeted by excluded needles are removed entirely from the result.
 Needles are declared using the [object-scan](https://github.com/blackflux/object-scan) syntax.
 
 _Example:_
-<!-- eslint-disable import/no-unresolved,no-console -->
+<!-- eslint-disable import/no-unresolved,no-console,import/no-extraneous-dependencies -->
 ```js
 const { clone } = require('object-lib');
 
@@ -74,7 +74,7 @@ and the respective values are _contained_.
 All other types are contained if they match exactly (`===`).
 
 _Example:_
-<!-- eslint-disable import/no-unresolved -->
+<!-- eslint-disable import/no-unresolved,import/no-extraneous-dependencies -->
 ```js
 const { contains } = require('object-lib');
 
@@ -94,7 +94,7 @@ If a function is passed, it is invoked with the value, and the result is used as
 The paths are defined using [object-scan](https://github.com/blackflux/object-scan) syntax.
 
 _Example:_
-<!-- eslint-disable import/no-unresolved -->
+<!-- eslint-disable import/no-unresolved,import/no-extraneous-dependencies -->
 ```js
 const { Merge } = require('object-lib');
 
