@@ -107,7 +107,7 @@
     "url": "https://github.com/blackflux/object-lib/issues"
   },
   "engines": {
-    "node": ">= 10"
+    "node": ">= 12"
   },
   "dependencies": {
     "object-scan": "14.0.0"
