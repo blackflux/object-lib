@@ -27,7 +27,7 @@
     "js-gardener": "3.0.1",
     "lodash.clonedeep": "4.5.0",
     "lodash.samplesize": "4.2.0",
-    "node-tdd": "3.0.1",
+    "node-tdd": "3.0.2",
     "nyc": "15.1.0",
     "semantic-release": "17.4.2"
   },
