@@ -16,4 +16,4 @@ const gen = (depth) => {
   return r;
 };
 
-module.exports = () => gen(0);
+export default () => gen(0);

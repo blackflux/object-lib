@@ -1,11 +1,11 @@
-const expect = require('chai').expect;
-const { describe } = require('node-tdd');
-const contains = require('../../src/core/contains');
-const genData = require('./gen-data');
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import contains from '../../src/core/contains.js';
+import genData from './gen-data.js';
 
 describe('Testing contains', { timeout: 100000 }, () => {
-  it('Batch test', ({ fixture }) => {
-    const containsRec = fixture('contains-rec');
+  it('Batch test', async ({ fixture }) => {
+    const containsRec = await fixture('contains-rec');
     for (let x = 0; x < 10000; x += 1) {
       const tree = genData();
       const subtree = genData();

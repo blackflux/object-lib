@@ -25,4 +25,4 @@ const mergeRec = (tree, subtree) => {
   return subtree;
 };
 
-module.exports = mergeRec;
+export default mergeRec;

@@ -24,4 +24,4 @@ const containsRec = (haystack, needle) => {
   return haystack === needle;
 };
 
-module.exports = containsRec;
+export default containsRec;

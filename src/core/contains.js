@@ -1,5 +1,5 @@
-const objectScan = require('object-scan');
-const last = require('../util/last');
+import objectScan from 'object-scan';
+import last from '../util/last.js';
 
 const scanner = objectScan(['**'], {
   rtn: 'context',
@@ -36,7 +36,7 @@ const scanner = objectScan(['**'], {
   }
 });
 
-module.exports = (tree, subtree) => {
+export default (tree, subtree) => {
   const { result } = scanner(subtree, { stack: [tree], result: true });
   return result;
 };

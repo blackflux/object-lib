@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const { describe } = require('node-tdd');
-const cloneDeep = require('lodash.clonedeep');
-const Merge = require('../../src/core/merge');
-const genData = require('./gen-data');
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import cloneDeep from 'lodash.clonedeep';
+import Merge from '../../src/core/merge.js';
+import genData from './gen-data.js';
 
 describe('Testing Merge', { timeout: 100000 }, () => {
   describe('Default Merge', () => {
@@ -11,8 +11,8 @@ describe('Testing Merge', { timeout: 100000 }, () => {
       merge = Merge();
     });
 
-    it('Batch test', ({ fixture }) => {
-      const mergeRec = fixture('merge-rec');
+    it('Batch test', async ({ fixture }) => {
+      const mergeRec = await fixture('merge-rec');
       for (let x = 0; x < 10000; x += 1) {
         const tree = genData();
         const subtree = genData();
@@ -86,14 +86,14 @@ describe('Testing Merge', { timeout: 100000 }, () => {
       }
     });
 
-    it('Testing SO question: https://stackoverflow.com/questions/65822248', ({ fixture }) => {
-      const json1 = fixture('json1');
-      const json2 = fixture('json2');
+    it('Testing SO question: https://stackoverflow.com/questions/65822248', async ({ fixture }) => {
+      const json1 = await fixture('json1');
+      const json2 = await fixture('json2');
       const merge = Merge({
         '[*]': 'id',
         '[*].addresses[*]': 'type'
       });
-      expect(merge(json1, json2)).to.deep.equal(fixture('result'));
+      expect(merge(json1, json2)).to.deep.equal(await fixture('result'));
     });
 
     it('Testing array merge', () => {

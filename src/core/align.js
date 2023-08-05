@@ -1,5 +1,5 @@
-const objectScan = require('object-scan');
-const last = require('../util/last');
+import objectScan from 'object-scan';
+import last from '../util/last.js';
 
 const align = (target, ref) => {
   const keysTarget = Object.keys(target);
@@ -35,6 +35,6 @@ const scanner = objectScan(['', '**'], {
   }
 });
 
-module.exports = (tree, ref) => {
+export default (tree, ref) => {
   scanner(ref, [tree]);
 };
