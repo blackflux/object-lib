@@ -1,7 +1,7 @@
-const clonedeep = require('lodash.clonedeep');
-const objectScan = require('object-scan');
+import clonedeep from 'lodash.clonedeep';
+import objectScan from 'object-scan';
 
-module.exports = (obj_, needles) => {
+export default (obj_, needles) => {
   if (!(obj_ instanceof Object)) {
     return obj_;
   }

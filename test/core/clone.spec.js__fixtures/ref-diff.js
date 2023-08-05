@@ -14,4 +14,4 @@ const refDiff = (o1, o2) => {
     }, {});
 };
 
-module.exports = refDiff;
+export default refDiff;

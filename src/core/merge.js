@@ -1,7 +1,7 @@
-const assert = require('assert');
-const objectScan = require('object-scan');
-const last = require('../util/last');
-const mkChild = require('../util/mk-child');
+import assert from 'assert';
+import objectScan from 'object-scan';
+import last from '../util/last.js';
+import mkChild from '../util/mk-child.js';
 
 const populate = (obj, key, fn) => {
   if (!(key in obj)) {
@@ -17,7 +17,7 @@ const incompatible = (a, b) => (
   || Array.isArray(a) !== Array.isArray(b)
 );
 
-module.exports = (logic_ = {}) => {
+export default (logic_ = {}) => {
   const logic = { '**': null, ...logic_ };
 
   const scanner = objectScan(Object.keys(logic), {

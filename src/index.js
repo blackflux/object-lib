@@ -1,11 +1,4 @@
-const align = require('./core/align');
-const clone = require('./core/clone');
-const contains = require('./core/contains');
-const Merge = require('./core/merge');
-
-module.exports = {
-  align,
-  clone,
-  contains,
-  Merge
-};
+export { default as align } from './core/align.js';
+export { default as clone } from './core/clone.js';
+export { default as contains } from './core/contains.js';
+export { default as Merge } from './core/merge.js';
