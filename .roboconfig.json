@@ -10,8 +10,8 @@
       "projectName": "object-lib",
       "owner": "simlu",
       "ownerName": "Lukas Siemon",
-      "mergeBot": "MrsFlux"
-,"nccEnabled": true
+      "mergeBot": "MrsFlux",
+      "nccEnabled": true
     }
   }
 }
