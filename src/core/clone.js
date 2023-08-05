@@ -1,8 +1,8 @@
-const objectScan = require('object-scan');
-const last = require('../util/last');
-const mkChild = require('../util/mk-child');
+import objectScan from 'object-scan';
+import last from '../util/last.js';
+import mkChild from '../util/mk-child.js';
 
-module.exports = (obj, needles = []) => {
+export default (obj, needles = []) => {
   const hasDoubleStar = needles.includes('**');
   const breakLength = hasDoubleStar ? 0 : 1;
   return objectScan(hasDoubleStar ? needles : ['**', ...needles], {

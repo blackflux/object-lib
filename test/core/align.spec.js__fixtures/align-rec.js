@@ -33,4 +33,4 @@ const align = (target, ref) => {
       target[k] = value;
     });
 };
-module.exports = align;
+export default align;

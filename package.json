@@ -1,5 +1,6 @@
 {
   "name": "object-lib",
+  "type": "module",
   "version": "0.0.0-development",
   "main": "lib/index.js",
   "repository": {
@@ -9,27 +10,23 @@
   "author": "Lukas Siemon",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "7.14.8",
-    "@babel/core": "7.15.0",
-    "@babel/register": "7.15.3",
-    "@blackflux/eslint-plugin-rules": "2.0.3",
-    "@blackflux/robo-config-plugin": "5.3.0",
-    "babel-eslint": "10.1.0",
-    "babel-preset-latest-node": "5.5.1",
-    "chai": "4.3.4",
-    "coveralls": "3.1.1",
-    "eslint": "7.32.0",
-    "eslint-config-airbnb-base": "14.2.1",
-    "eslint-plugin-import": "2.24.2",
+    "@babel/core": "7.22.9",
+    "@babel/eslint-parser": "7.22.9",
+    "@babel/register": "7.22.5",
+    "@blackflux/eslint-plugin-rules": "3.0.0",
+    "@blackflux/robo-config-plugin": "9.1.9",
+    "c8": "7.11.0",
+    "chai": "4.3.7",
+    "eslint": "8.46.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.28.0",
     "eslint-plugin-json": "3.1.0",
-    "eslint-plugin-markdown": "2.2.0",
-    "eslint-plugin-mocha": "9.0.0",
-    "js-gardener": "3.0.3",
+    "eslint-plugin-markdown": "3.0.1",
+    "eslint-plugin-mocha": "10.1.0",
+    "js-gardener": "5.0.1",
     "lodash.clonedeep": "4.5.0",
     "lodash.samplesize": "4.2.0",
-    "node-tdd": "3.0.4",
-    "nyc": "15.1.0",
-    "semantic-release": "17.4.7"
+    "node-tdd": "4.0.0"
   },
   "licenses": [
     {
@@ -52,44 +49,14 @@
     "group",
     "groupby"
   ],
-  "nyc": {
-    "exclude": [
-      "gardener.js",
-      "node_modules/*",
-      "coverage/*",
-      "lib/*"
-    ],
-    "tempDir": "./coverage/.nyc_output",
-    "report-dir": "./coverage",
-    "check-coverage": true,
-    "per-file": false,
-    "lines": 100,
-    "statements": 100,
-    "functions": 100,
-    "branches": 100,
-    "include": [
-      "**/*.js"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary"
-    ],
-    "require": [
-      "@babel/register"
-    ],
-    "extension": [],
-    "cache": true,
-    "all": true,
-    "babel": true
-  },
   "files": [
     "lib"
   ],
   "scripts": {
     "clean": "rm -rf lib",
-    "build": "npx babel src --out-dir lib --copy-files --include-dotfiles --config-file ./.babelrc",
+    "build": "cp -rf ./src ./lib && ncc build -m -o lib && mv lib/index.js lib/index.min.js && cp src/index.js lib/index.js && rm lib/package.json",
     "build-clean": "yarn run clean && yarn run build",
-    "test-simple": "nyc mocha \"./test/**/*.spec.js\"",
+    "test-simple": "c8 mocha --experimental-loader=./test/hot.js \"./test/**/*.spec.js\"",
     "test": "yarn run clean && yarn run gardener && yarn run test-simple",
     "docker": "docker run --net host -u`id -u`:`id -g` -v $(pwd):/user/project -v ~/.aws:/user/.aws -v ~/.npmrc:/user/.npmrc -w /user/project -it --entrypoint /bin/bash",
     "u": "yarn upgrade --latest --force",
@@ -98,18 +65,18 @@
     "t": "yarn test",
     "ts": "yarn run test-simple",
     "tsv": "yarn run test-simple --verbose",
-    "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info",
     "semantic-release": "yarn run build-clean && npx semantic-release",
-    "gardener": "node gardener"
+    "gardener": "node gardener.js",
+    "ncc-analyze": "yarn clean && cp -rf ./src ./lib && ncc build -m -s -o lib && npx source-map-explorer lib/index.js --only-mapped --html source.html && yarn clean"
   },
   "homepage": "https://github.com/blackflux/object-lib#readme",
   "bugs": {
     "url": "https://github.com/blackflux/object-lib/issues"
   },
   "engines": {
-    "node": ">= 12"
+    "node": ">= 16"
   },
   "dependencies": {
-    "object-scan": "17.0.0"
+    "object-scan": "19.0.0"
   }
 }

@@ -1,1 +1,1 @@
-module.exports = (arr) => arr[arr.length - 1];
+export default (arr) => arr[arr.length - 1];

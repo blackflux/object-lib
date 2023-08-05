@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const cloneDeep = require('lodash.clonedeep');
-const { describe } = require('node-tdd');
-const align = require('../../src/core/align');
-const genData = require('./gen-data');
+import { expect } from 'chai';
+import cloneDeep from 'lodash.clonedeep';
+import { describe } from 'node-tdd';
+import align from '../../src/core/align.js';
+import genData from './gen-data.js';
 
 describe('Testing align', { timeout: 100000 }, () => {
   const convert = (input) => {
@@ -16,8 +16,8 @@ describe('Testing align', { timeout: 100000 }, () => {
     expect(convert(input)).to.deep.equal(convert(expected));
   };
 
-  it('Batch test', ({ fixture }) => {
-    const alignRec = fixture('align-rec');
+  it('Batch test', async ({ fixture }) => {
+    const alignRec = await fixture('align-rec');
     for (let x = 0; x < 10000; x += 1) {
       const tree1 = genData();
       const tree2 = cloneDeep(tree1);

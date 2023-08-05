@@ -24,7 +24,7 @@ Align the ordering of one object recursively to a reference object.
 _Example:_
 <!-- eslint-disable import/no-unresolved,import/no-extraneous-dependencies -->
 ```js
-const { align } = require('object-lib');
+import { align } from 'object-lib';
 
 const obj = { k1: 1, k2: 2 };
 const ref = { k2: null, k1: null };
@@ -46,7 +46,7 @@ Needles are declared using the [object-scan](https://github.com/blackflux/object
 _Example:_
 <!-- eslint-disable import/no-unresolved,no-console,import/no-extraneous-dependencies -->
 ```js
-const { clone } = require('object-lib');
+import { clone } from 'object-lib';
 
 const data = { a: {}, b: {}, c: {} };
 const cloned = clone(data, ['b', '!c']);
@@ -76,7 +76,7 @@ All other types are contained if they match exactly (`===`).
 _Example:_
 <!-- eslint-disable import/no-unresolved,import/no-extraneous-dependencies -->
 ```js
-const { contains } = require('object-lib');
+import { contains } from 'object-lib';
 
 contains({ a: [1, 2], b: 'c' }, { a: [1, 2] });
 // => true
@@ -96,7 +96,7 @@ The paths are defined using [object-scan](https://github.com/blackflux/object-sc
 _Example:_
 <!-- eslint-disable import/no-unresolved,import/no-extraneous-dependencies -->
 ```js
-const { Merge } = require('object-lib');
+import { Merge } from 'object-lib';
 
 Merge()(
   { children: [{ id: 1 }, { id: 2 }] },
