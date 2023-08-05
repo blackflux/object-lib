@@ -76,6 +76,6 @@
     "node": ">= 16"
   },
   "dependencies": {
-    "object-scan": "19.0.0"
+    "object-scan": "19.0.1"
   }
 }
