@@ -138,4 +138,11 @@ describe('Testing clone', { timeout: 100000 }, () => {
       configurable: false
     });
   });
+
+  it('Test list clone', () => {
+    const data = ['1'];
+    data.x = 'y';
+    const cloned = clone(data);
+    expect(cloned).to.deep.equal(['1']);
+  });
 });
