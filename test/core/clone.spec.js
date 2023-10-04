@@ -124,4 +124,18 @@ describe('Testing clone', { timeout: 100000 }, () => {
     expect(data.c).to.not.equal(cloned.c);
     expect(data.c[1]).to.equal(cloned.c[0]);
   });
+
+  it('Test symbol clone', () => {
+    const data = {};
+    const symbol = Symbol('symbol');
+    Object.defineProperty(data, symbol, { enumerable: false, writable: false, value: 'symbol-value' });
+    const cloned = clone(data);
+    const desc = Object.getOwnPropertyDescriptor(cloned, symbol);
+    expect(desc).to.deep.equal({
+      value: 'symbol-value',
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
+  });
 });
