@@ -1,0 +1,6 @@
+{
+  "input": "```json{ \"x\": \"hello\nyou\" }```",
+  "expected": {
+    "x": "hello\nyou"
+  }
+}
