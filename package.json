@@ -10,23 +10,23 @@
   "author": "Lukas Siemon",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "7.23.0",
-    "@babel/eslint-parser": "7.22.15",
-    "@babel/register": "7.22.15",
+    "@babel/core": "7.24.7",
+    "@babel/eslint-parser": "7.24.7",
+    "@babel/register": "7.24.6",
     "@blackflux/eslint-plugin-rules": "3.0.1",
-    "@blackflux/robo-config-plugin": "9.2.2",
-    "c8": "8.0.1",
-    "chai": "4.3.10",
-    "eslint": "8.50.0",
+    "@blackflux/robo-config-plugin": "9.4.0",
+    "c8": "10.1.0",
+    "chai": "5.1.1",
+    "eslint": "8.57.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.28.1",
-    "eslint-plugin-json": "3.1.0",
-    "eslint-plugin-markdown": "3.0.1",
-    "eslint-plugin-mocha": "10.2.0",
-    "js-gardener": "5.0.2",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-json": "4.0.0",
+    "eslint-plugin-markdown": "5.0.0",
+    "eslint-plugin-mocha": "10.4.3",
+    "js-gardener": "5.0.4",
     "lodash.clonedeep": "4.5.0",
     "lodash.samplesize": "4.2.0",
-    "node-tdd": "4.0.1"
+    "node-tdd": "5.2.4"
   },
   "licenses": [
     {
@@ -56,7 +56,7 @@
     "clean": "rm -rf lib",
     "build": "cp -rf ./src ./lib",
     "build-clean": "yarn run clean && yarn run build",
-    "test-simple": "c8 mocha --experimental-loader=./test/hot.js \"./test/**/*.spec.js\"",
+    "test-simple": "c8 mocha --import=./test/reg.js \"./test/**/*.spec.js\"",
     "test": "yarn run clean && yarn run gardener && yarn run test-simple",
     "docker": "docker run --net host -u`id -u`:`id -g` -v $(pwd):/user/project -v ~/.aws:/user/.aws -v ~/.npmrc:/user/.npmrc -w /user/project -it --entrypoint /bin/bash",
     "u": "yarn upgrade --latest --force",
@@ -65,7 +65,7 @@
     "t": "yarn test",
     "ts": "yarn run test-simple",
     "tsv": "yarn run test-simple --verbose",
-    "semantic-release": "yarn run build-clean && npx semantic-release",
+    "semantic-release": "yarn run build-clean && yarn exec semantic-release",
     "gardener": "node gardener.js"
   },
   "homepage": "https://github.com/blackflux/object-lib#readme",
@@ -76,6 +76,6 @@
     "node": ">= 16"
   },
   "dependencies": {
-    "object-scan": "19.0.3"
+    "object-scan": "19.0.5"
   }
 }
