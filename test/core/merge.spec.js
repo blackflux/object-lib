@@ -7,6 +7,7 @@ import genData from './gen-data.js';
 describe('Testing Merge', { timeout: 100000 }, () => {
   describe('Default Merge', () => {
     let merge;
+
     before(() => {
       merge = Merge();
     });
