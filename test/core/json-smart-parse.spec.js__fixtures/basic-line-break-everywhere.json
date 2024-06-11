@@ -1,0 +1,6 @@
+{
+  "input": "\n{\n \n\"x\":\n\"\nhello\n\nyou\n\"\n \n}\n",
+  "expected": {
+    "x": "\nhello\n\nyou\n"
+  }
+}

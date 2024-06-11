@@ -7,7 +7,8 @@ describe('Testing index.js', () => {
       'Merge',
       'align',
       'clone',
-      'contains'
+      'contains',
+      'jsonSmartParse'
     ]);
   });
 });
