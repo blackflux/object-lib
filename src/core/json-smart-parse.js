@@ -1,29 +1,29 @@
+const subs = { // table of character substitutions
+  '\n': '\\n',
+  '\r': '\\r',
+  '\t': '\\t'
+};
+
 export default (str) => {
   let result = str;
   if (result.includes('```')) {
     result = result.split(/```(?:json)?/)[1];
   }
 
-  const unescaped = [];
+  result = result.split('');
   let escaped = false;
   let quoted = false;
   for (let i = 0; i < result.length; i += 1) {
     const char = result[i];
-    if (['\n', '\r', '\t'].includes(char) && quoted) {
-      unescaped.push(i);
+    if (quoted && char in subs) {
+      result[i] = subs[char];
     }
     if (!escaped && char === '"') {
       quoted = !quoted;
     }
     escaped = char === '\\' ? !escaped : false;
   }
-
-  result = result.replace(/\n/g, (m, idx) => {
-    if (unescaped.includes(idx)) {
-      return JSON.stringify(m).slice(1, -1);
-    }
-    return m;
-  });
+  result = result.join('');
 
   return JSON.parse(result);
 };
