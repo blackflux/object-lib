@@ -4,7 +4,7 @@
       "assorted/@npm-opensource"
     ],
     "variables": {
-      "nodeVersion": "16",
+      "nodeVersion": "20",
       "repoKey": "blackflux/object-lib",
       "packageName": "object-lib",
       "projectName": "object-lib",
