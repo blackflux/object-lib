@@ -30,9 +30,8 @@ const SafeProxy = (tgt, ctx, path = '') => {
         const currentPath = path ? `${path}.${propStr}` : propStr;
         if (typeof ctx?.onNotFound === 'function') {
           return ctx.onNotFound(currentPath);
-        } else {
-          throw new Error(`Property '${currentPath}' does not exist`);
         }
+        throw new Error(`Property '${currentPath}' does not exist`);
       }
 
       const value = Reflect.get(target, prop, receiver);
