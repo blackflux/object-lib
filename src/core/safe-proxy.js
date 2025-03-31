@@ -18,6 +18,8 @@ const SafeProxy = (tgt, ctx, key = '') => {
     return tgt;
   }
 
+  const hasCb = typeof ctx?.cb === 'function';
+
   return new Proxy(tgt, {
     get(target, prop, receiver) {
       if (BYPASS_PROPS.includes(prop) && !Object.prototype.hasOwnProperty.call(target, prop)) {
@@ -28,14 +30,14 @@ const SafeProxy = (tgt, ctx, key = '') => {
       const currentKey = key ? `${key}.${propStr}` : propStr;
 
       const found = prop in target;
-      if (!found && ctx?.throw !== false) {
+      if (!found && !hasCb) {
         throw new Error(`Property '${currentKey}' does not exist`);
       }
 
       let value = found ? Reflect.get(target, prop, receiver) : undefined;
 
-      if (typeof ctx?.cb === 'function') {
-        value = ctx.cb(currentKey, value, found);
+      if (hasCb) {
+        value = ctx.cb({ key: currentKey, value, found });
       }
 
       // eslint-disable-next-line @blackflux/rules/prevent-typeof-object
@@ -45,7 +47,7 @@ const SafeProxy = (tgt, ctx, key = '') => {
 
       return value;
     },
-    ...(ctx?.hasAny === true ? { has() { return true; } } : {})
+    ...(hasCb === true ? { has() { return true; } } : {})
   });
 };
 
