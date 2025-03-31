@@ -30,8 +30,7 @@ describe('Testing SafeProxy', () => {
   it('Basic not-found overwrite', async () => {
     const obj = { a: { b: {} } };
     const proxy = SafeProxy(obj, {
-      throw: false,
-      cb: (key, value) => (['', undefined].includes(value) ? `Not Specified <${key}>` : value)
+      cb: ({ key, value }) => (['', undefined].includes(value) ? `Not Specified <${key}>` : value)
     });
     const resp = proxy.a.b.c;
     expect(resp).to.deep.equal('Not Specified <a.b.c>');
@@ -39,7 +38,7 @@ describe('Testing SafeProxy', () => {
 
   it('Specific key overwrite', async () => {
     const obj = { a: { b: {} } };
-    const cb = (key, value) => (key === 'a.b' ? '<overwritten>' : value);
+    const cb = ({ key, value }) => (key === 'a.b' ? '<overwritten>' : value);
     const proxy = SafeProxy(obj, { cb });
     const resp = proxy.a.b;
     expect(resp).to.deep.equal('<overwritten>');
@@ -48,8 +47,7 @@ describe('Testing SafeProxy', () => {
   it('Not found chaining', async () => {
     const obj = { a: { b: {} } };
     const proxy = SafeProxy(obj, {
-      throw: false,
-      cb: (key, value, found) => (found ? value : { key })
+      cb: ({ key, value, found }) => (found ? value : { key })
     });
     const resp = proxy.a.b.c.d.e;
     expect(resp).to.deep.equal({ key: 'a.b.c.d.e' });
@@ -57,9 +55,10 @@ describe('Testing SafeProxy', () => {
 
   it('Testing hasAny', async () => {
     const obj = { a: {} };
-    const proxyHasAll = SafeProxy(obj, { hasAny: true });
-    const proxyHasSome = SafeProxy(obj, { hasAny: false });
+    const proxyHasAll = SafeProxy(obj, { cb: ({ value: v }) => v });
+    const proxyHasSome = SafeProxy(obj);
     expect('a' in proxyHasAll).to.deep.equal(true);
+    expect(proxyHasAll.a).to.deep.equal({});
     expect('b' in proxyHasAll).to.deep.equal(true);
     expect('a' in proxyHasSome).to.deep.equal(true);
     expect('b' in proxyHasSome).to.deep.equal(false);
