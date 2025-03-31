@@ -12,7 +12,7 @@ const BYPASS_PROPS = [
 ];
 
 // Proxy that errors when accessing non-existent properties
-const SafeProxy = (tgt, path = '') => {
+const SafeProxy = (tgt, ctx, path = '') => {
   // eslint-disable-next-line @blackflux/rules/prevent-typeof-object
   if (tgt === null || typeof tgt !== 'object') {
     return tgt;
@@ -28,7 +28,11 @@ const SafeProxy = (tgt, path = '') => {
 
       if (!(prop in target)) {
         const currentPath = path ? `${path}.${propStr}` : propStr;
-        throw new Error(`Property '${currentPath}' does not exist`);
+        if (typeof ctx?.onNotFound === 'function') {
+          return ctx.onNotFound(currentPath);
+        } else {
+          throw new Error(`Property '${currentPath}' does not exist`);
+        }
       }
 
       const value = Reflect.get(target, prop, receiver);
@@ -36,7 +40,7 @@ const SafeProxy = (tgt, path = '') => {
       // eslint-disable-next-line @blackflux/rules/prevent-typeof-object
       if (value !== null && typeof value === 'object') {
         const currentPath = path ? `${path}.${propStr}` : propStr;
-        return SafeProxy(value, currentPath);
+        return SafeProxy(value, ctx, currentPath);
       }
 
       return value;
@@ -44,4 +48,4 @@ const SafeProxy = (tgt, path = '') => {
   });
 };
 
-export default SafeProxy;
+export default (tgt, ctx) => SafeProxy(tgt, ctx);

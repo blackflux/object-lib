@@ -119,3 +119,16 @@ Merge({ '**[*]': 'id' })(
 
 Creates a "wrapper" proxy object that errors when a (nested) property is accessed that does not exist.
 Normally this would just return "undefined".
+
+### Template(obj: Object)
+
+Takes input "template" obj. This is expected to be a (deeply nested) object.
+Rendering works very similar to mustache templates, some features are not supported yet.
+
+For details see tests.
+
+#### variables()
+Returns all unique variables in template
+
+#### render(vars: { k: v })
+Renders variables into deep copy of obj
