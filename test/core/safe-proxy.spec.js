@@ -27,6 +27,13 @@ describe('Testing SafeProxy', () => {
     expect(err.message).to.deep.equal('Property \'undefined\' does not exist');
   });
 
+  it('Basic onNotFound overwrite', async ({ capture }) => {
+    const obj = { a: { b: {} } };
+    const proxy = SafeProxy(obj, { onNotFound: (path) => `Not Specified <${path}>` });
+    const resp = proxy.a.b.c;
+    expect(resp).to.equal('Not Specified <a.b.c>');
+  });
+
   it('Basic symbol error', async ({ capture }) => {
     const symbol = Symbol('key');
     const obj = {
