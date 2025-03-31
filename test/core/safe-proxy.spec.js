@@ -31,15 +31,15 @@ describe('Testing SafeProxy', () => {
     const obj = { a: { b: {} } };
     const proxy = SafeProxy(obj, {
       throw: false,
-      cb: (path, value) => (['', undefined].includes(value) ? `Not Specified <${path}>` : value)
+      cb: (key, value) => (['', undefined].includes(value) ? `Not Specified <${key}>` : value)
     });
     const resp = proxy.a.b.c;
     expect(resp).to.deep.equal('Not Specified <a.b.c>');
   });
 
-  it('Specific path overwrite', async () => {
+  it('Specific key overwrite', async () => {
     const obj = { a: { b: {} } };
-    const cb = (path, value) => (path === 'a.b' ? '<overwritten>' : value);
+    const cb = (key, value) => (key === 'a.b' ? '<overwritten>' : value);
     const proxy = SafeProxy(obj, { cb });
     const resp = proxy.a.b;
     expect(resp).to.deep.equal('<overwritten>');
@@ -49,10 +49,10 @@ describe('Testing SafeProxy', () => {
     const obj = { a: { b: {} } };
     const proxy = SafeProxy(obj, {
       throw: false,
-      cb: (path, value, found) => (found ? value : { path })
+      cb: (key, value, found) => (found ? value : { key })
     });
     const resp = proxy.a.b.c.d.e;
-    expect(resp).to.deep.equal({ path: 'a.b.c.d.e' });
+    expect(resp).to.deep.equal({ key: 'a.b.c.d.e' });
   });
 
   it('Testing hasAny', async () => {
