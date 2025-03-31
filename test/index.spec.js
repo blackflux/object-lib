@@ -6,6 +6,7 @@ describe('Testing index.js', () => {
     expect(Object.keys(index)).to.deep.equal([
       'Merge',
       'SafeProxy',
+      'Template',
       'align',
       'clone',
       'contains',
