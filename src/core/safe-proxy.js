@@ -25,25 +25,27 @@ const SafeProxy = (tgt, ctx, path = '') => {
       }
 
       const propStr = typeof prop === 'symbol' ? prop.toString() : String(prop);
+      const currentPath = path ? `${path}.${propStr}` : propStr;
 
-      if (!(prop in target)) {
-        const currentPath = path ? `${path}.${propStr}` : propStr;
-        if (typeof ctx?.onNotFound === 'function') {
-          return ctx.onNotFound(currentPath);
-        }
+      const found = prop in target;
+      if (!found && ctx?.throw !== false) {
         throw new Error(`Property '${currentPath}' does not exist`);
       }
 
-      const value = Reflect.get(target, prop, receiver);
+      let value = found ? Reflect.get(target, prop, receiver) : undefined;
+
+      if (typeof ctx?.cb === 'function') {
+        value = ctx.cb(currentPath, value, found);
+      }
 
       // eslint-disable-next-line @blackflux/rules/prevent-typeof-object
       if (value !== null && typeof value === 'object') {
-        const currentPath = path ? `${path}.${propStr}` : propStr;
         return SafeProxy(value, ctx, currentPath);
       }
 
       return value;
-    }
+    },
+    ...(ctx?.hasAny === true ? { has() { return true; } } : {})
   });
 };
 
