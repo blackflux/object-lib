@@ -114,3 +114,8 @@ Merge({ '**[*]': 'id' })(
 );
 // => { children: [ { id: 1 }, { id: 2 }, { id: 3 } ] }
 ```
+
+### SafeProxy(obj: Object)
+
+Creates a "wrapper" proxy object that errors when a (nested) property is accessed that does not exist.
+Normally this would just return "undefined".
