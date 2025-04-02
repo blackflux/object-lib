@@ -5,6 +5,7 @@ const BYPASS_PROPS = [
   Symbol.hasInstance,
   'inspect',
   'toString',
+  'toJSON',
   'valueOf',
   'constructor',
   'then',
